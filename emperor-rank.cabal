@@ -38,6 +38,10 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , containers
+    , mtl
+    , parsec
+    , random
     , text
   default-language: Haskell2010
 
@@ -51,7 +55,11 @@ executable emperor-rank-exe
   build-depends:
       aeson
     , base >=4.7 && <5
+    , containers
     , emperor-rank
+    , mtl
+    , parsec
+    , random
     , text
   default-language: Haskell2010
 
@@ -71,8 +79,12 @@ test-suite emperor-rank-test
       QuickCheck
     , aeson
     , base >=4.7 && <5
+    , containers
     , emperor-rank
     , hspec
     , hspec-discover
+    , mtl
+    , parsec
+    , random
     , text
   default-language: Haskell2010
