@@ -27,8 +27,9 @@ library
   exposed-modules:
       ApiResponse
       EmperorRaw
-      JSON
       Lib
+      ParserJSON.JParser
+      ParserJSON.JSON
       Year
   other-modules:
       Paths_emperor_rank

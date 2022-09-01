@@ -1,4 +1,4 @@
-module JSON 
+module ParserJSON.JSON 
 where
 
 import Data.List 
