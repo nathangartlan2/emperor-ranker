@@ -47,7 +47,7 @@ sepBy1 :: Parser a -> Parser b -> Parser [a]
 sepBy1 body sep = P.sepBy1 body (P.try sep)
 
 augName :: String
-augName = "{\"name\":\"Augustus\"}" 
+augName = "\"name\":\"Augustus\"" 
 
 jStartParser :: Parser Char
 jStartParser = char '{'
@@ -72,7 +72,7 @@ jStringParser = do
 jStringEscapedParser :: Parser JSON
 jStringEscapedParser = do
     _ <- (P.string "\"")
-    input <- (P.many P.anyChar) 
+    input <- (P.many $ P.noneOf ['\"']) 
     _ <- (P.string "\"")
     pure $ JString input
 
@@ -153,6 +153,8 @@ jObjectParser = do
    parsedObject <-  sepBy jPairParser (pairSeparator) 
    _ <- char '}'
    pure $ JObject parsedObject
+
+
 
 allObjectParser :: Parser JSON
 allObjectParser = do
