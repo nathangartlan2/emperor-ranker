@@ -37,5 +37,7 @@ data EmperorRaw
 --              ]
 
 augustus :: String
-augustus = "{\"name\": \"augustus\", \"reignStart\" : 27, \"reignEnd\" : 14 \"bio\" ,\"The first Roman Emperor\", \"killedBy\" : \"natural causes\"}"
+augustus = "{\"name\": \"augustus\", \"reignStart\" : 27, \"reignEnd\" : 14, \"bio\" : \"The first Roman Emperor\", \"killedBy\" : \"natural causes\"}"
 
+augustus1 :: String
+augustus1 = "{\"name\": \"augustus\", \"reignStart\" : 27, \"reignEnd\" : 14, \"bio\" : \"First Roman\"}"

@@ -66,21 +66,23 @@ jBoolParse = (pure (JBoolean True) <* string "\"true\"")
 
 jStringParser :: Parser JSON
 jStringParser = do
-    input <- (P.many P.alphaNum) 
+    input <- (P.many P.anyChar) 
     pure $ JString input
 
 jStringEscapedParser :: Parser JSON
 jStringEscapedParser = do
     _ <- (P.string "\"")
-    input <- (P.many P.alphaNum) 
+    input <- (P.many P.anyChar) 
     _ <- (P.string "\"")
     pure $ JString input
 
 jFullStringParser :: Parser JSON
 jFullStringParser = jStringEscapedParser
-   <|>  jStringParser 
+  --  <|>  jStringParser 
 
- 
+integer :: Parser Int
+integer = rd <$> many1 digit
+    where rd = read :: String -> Int
 
 jFloatParser :: Parser JSON
 jFloatParser = do
@@ -102,9 +104,9 @@ jIntParser = do
 jPrimitiveParse :: Parser JSON
 jPrimitiveParse =  jNullParse 
     <|> jBoolParse
+    <|> jFullStringParser
     <|> jFloatParser
     <|> jIntParser
-    <|> jFullStringParser
 
 
 jParse :: Parser JSON
@@ -151,6 +153,12 @@ jObjectParser = do
    parsedObject <-  sepBy jPairParser (pairSeparator) 
    _ <- char '}'
    pure $ JObject parsedObject
+
+allObjectParser :: Parser JSON
+allObjectParser = do
+  parsedObject <-  sepBy jObjectParser (pairSeparator) 
+  _ <- P.eof
+  pure $ JArray parsedObject
 
 parseInput :: String -> Maybe [JSON]
 parseInput str = case (parsed) of
