@@ -19,40 +19,6 @@ data JSON
   deriving (Show, Eq)
 
 
-
---test
-jstringTuple :: (String, String) -> (String, JSON)
-jstringTuple inp =  fmap (\x -> JString x) inp
-
-jdoubleTuple :: (String, Double) -> (String, JSON)
-jdoubleTuple inp =  fmap (\x -> JFloat x) inp
-
-
-
-stringList1 = [("genus","Citrullus"),("name", "Watermelon")]
-doubleList = [("id", 25)]
-stringList2 = [("family", "Cucurbitaceae"),("order", "Cucurbitales")]
-testNutrientList = [("carbohydrates", 8), ("protein",0.6), ("fat", 0.2), ("calories",30),  ("sugar",6)]
-
-makeNutrient :: (String, Double) -> (String, JSON)
-makeNutrient (name,value) = (name, JFloat value)
-
-
-makeNutrientList :: [(String, Double)] -> JSON
-makeNutrientList lst =  JObject rawList
-      where rawList = map (\item -> makeNutrient item) lst
-
-
-testList10 = fmap (\x -> jstringTuple x) stringList1
-
---NATHAN'S ORIGINAL
--- watermelon :: JSON
--- watermelon = JObject $ first ++ second ++ third   ++ fourth
---     where first = fmap (\x -> jstringTuple x) stringList1
---           second = fmap (\x -> jdoubleTuple x) doubleList
---           third = fmap (\x -> jstringTuple x) stringList2
---           fourth = [("Nutrients" , makeNutrientList testNutrientList)]
-
 watermelon :: JSON
 watermelon = JObject [
 	   ("genus", JString "Citrullus"),
@@ -174,7 +140,33 @@ watermelonString = "{\"genus\":\"Citrullus\"},{\"name\":\"Watermelon\"},{\"id\":
 
 
 
-readJsonFile :: IO ()
-readJsonFile = do
-   content <- readFile "./data/watermelon.json"
+readJsonFile :: String -> IO ()
+readJsonFile nm = do
+   content <- readFile $ "./data/" ++  nm ++ ".json"
    putStrLn content 
+
+  
+--test
+jstringTuple :: (String, String) -> (String, JSON)
+jstringTuple inp =  fmap (\x -> JString x) inp
+
+jdoubleTuple :: (String, Double) -> (String, JSON)
+jdoubleTuple inp =  fmap (\x -> JFloat x) inp
+
+
+
+stringList1 = [("genus","Citrullus"),("name", "Watermelon")]
+doubleList = [("id", 25)]
+stringList2 = [("family", "Cucurbitaceae"),("order", "Cucurbitales")]
+testNutrientList = [("carbohydrates", 8), ("protein",0.6), ("fat", 0.2), ("calories",30),  ("sugar",6)]
+
+makeNutrient :: (String, Double) -> (String, JSON)
+makeNutrient (name,value) = (name, JFloat value)
+
+
+makeNutrientList :: [(String, Double)] -> JSON
+makeNutrientList lst =  JObject rawList
+      where rawList = map (\item -> makeNutrient item) lst
+
+
+testList10 = fmap (\x -> jstringTuple x) stringList1
