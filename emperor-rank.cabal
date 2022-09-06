@@ -44,6 +44,7 @@ library
     , parsec
     , random
     , text
+    , wreq >=0.5.3.3 && <0.6
   default-language: Haskell2010
 
 executable emperor-rank-exe
@@ -62,6 +63,7 @@ executable emperor-rank-exe
     , parsec
     , random
     , text
+    , wreq >=0.5.3.3 && <0.6
   default-language: Haskell2010
 
 test-suite emperor-rank-test
@@ -88,4 +90,5 @@ test-suite emperor-rank-test
     , parsec
     , random
     , text
+    , wreq >=0.5.3.3 && <0.6
   default-language: Haskell2010

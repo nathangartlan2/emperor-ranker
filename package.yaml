@@ -27,6 +27,7 @@ dependencies:
 - mtl
 - parsec
 - text
+- wreq ^>=0.5.3.3
 
 ghc-options:
 - -Wall

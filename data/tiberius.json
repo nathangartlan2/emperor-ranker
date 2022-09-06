@@ -1,0 +1,24 @@
+{
+    "datasetid": "roman-emperors",
+    "recordid": "cc302166e4febc71a15982eb3547232eea25dca1",
+    "fields": {
+        "birth_cty": "Rome",
+        "name": "Tiberius",
+        "index": 2,
+        "image": "https://upload.wikimedia.org/wikipedia/commons/1/17/Tiberius_NyCarlsberg01.jpg",
+        "name_full": "TIBERIVS CAESAR DIVI AVGVSTI FILIVS AVGVSTVS",
+        "notes": "birth is BCE. Assign negative for correct ISO 8601 dates. Possibly assassinated by praetorian guard",
+        "rise": "Birthright",
+        "era": "Principate",
+        "verif_who": "Reddit user zonination",
+        "birth_prv": "Italia",
+        "killer": "Other Emperor",
+        "death": "37-03-16",
+        "cause": "Assassination",
+        "reign_start": "14-09-18",
+        "dynasty": "Julio-Claudian",
+        "birth": "41-11-16",
+        "reign_end": "37-03-16"
+    },
+    "record_timestamp": "2020-12-30T08:28:15.741Z"
+}

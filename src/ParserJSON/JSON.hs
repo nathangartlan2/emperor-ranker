@@ -138,13 +138,6 @@ watermelonString :: String
 watermelonString = "{\"genus\":\"Citrullus\"},{\"name\":\"Watermelon\"},{\"id\":25},{\"family\":\"Cucurbitaceae\"},{\"order\":\"Cucurbitales\"},{\"nutritions\":{\"carbohydrates\":8},{\"protein\":0.6},{\"fat\":0.2},{\"calories\":30},{\"sugar\":6}}"
 
 
-
-
-readJsonFile :: String -> IO ()
-readJsonFile nm = do
-   content <- readFile $ "./data/" ++  nm ++ ".json"
-   putStrLn content 
-
   
 --test
 jstringTuple :: (String, String) -> (String, JSON)

@@ -17,6 +17,9 @@ import Text.Parsec hiding
 import qualified Text.Parsec as P
 import Text.Parsec.String (Parser)
 
+watermelonEsc :: String
+watermelonEsc = "{\"genus\":\"Citrullus\",\"name\":\"Watermelon\",\"id\":25,\"family\":\"Cucurbitaceae\",\"order\":\"Cucurbitales\",\"nutritions\":{\"carbohydrates\":[1,2,3,4],\"protein\":0.6,\"fat\":0.2,\"calories\":30,\"sugar\":6}}"
+
 --simpler parse implementation
 parse :: Parser a -> String -> Either ParseError a 
 parse prsr = P.parse prsr ""
@@ -53,21 +56,15 @@ jStartParser :: Parser Char
 jStartParser = char '{'
 
 --able to parse a JNull
-jNullParse :: Parser JSON
-jNullParse = (pure JNull <* string "Null")
+jNullParser :: Parser JSON
+jNullParser = (pure JNull <* string "Null")
     <|> (pure JNull <* string "null")
     <|> (pure JNull <* string "NULL")
 
 -- able to parse a JBool
-jBoolParse :: Parser JSON
-jBoolParse = (pure (JBoolean True) <* string "\"true\"")
+jBoolParser :: Parser JSON
+jBoolParser = (pure (JBoolean True) <* string "\"true\"")
     <|> (pure (JBoolean False) <* string "\"false\"")
-
-
-jStringParser :: Parser JSON
-jStringParser = do
-    input <- (P.many P.anyChar) 
-    pure $ JString input
 
 jStringEscapedParser :: Parser JSON
 jStringEscapedParser = do
@@ -78,11 +75,6 @@ jStringEscapedParser = do
 
 jFullStringParser :: Parser JSON
 jFullStringParser = jStringEscapedParser
-  --  <|>  jStringParser 
-
-integer :: Parser Int
-integer = rd <$> many1 digit
-    where rd = read :: String -> Int
 
 jFloatParser :: Parser JSON
 jFloatParser = do
@@ -102,8 +94,10 @@ jIntParser = do
 
 -- building up the combined parser
 jPrimitiveParse :: Parser JSON
-jPrimitiveParse =  jNullParse 
-    <|> jBoolParse
+jPrimitiveParse =  jNullParser 
+    <|> jBoolParser
+    <|> jObjectParser
+    <|> jArryParser
     <|> jFullStringParser
     <|> jFloatParser
     <|> jIntParser
@@ -123,7 +117,7 @@ jsonParseCombined = do
 parseString :: Parser String
 parseString = do
     _ <- (P.string "\"")
-    input <- (P.many P.alphaNum) 
+    input <- (P.many $ P.noneOf ['\"']) 
     _ <- (P.string "\"")
     pure input
 
@@ -136,10 +130,12 @@ keyValueSeperator = do
 
 jPairParser :: Parser (String, JSON)
 jPairParser = do
-   nm <- parseString
-   _ <- keyValueSeperator
-   dt <- jPrimitiveParse
-   pure (nm, dt)
+  _ <- P.spaces
+  nm <- parseString
+  _ <- keyValueSeperator
+  dt <- jPrimitiveParse
+  _ <- P.spaces
+  pure (nm, dt)
  
 pairSeparator :: P.Parsec String () ()
 pairSeparator = do
@@ -154,28 +150,32 @@ jObjectParser = do
    _ <- char '}'
    pure $ JObject parsedObject
 
+jArryParser :: Parser JSON
+jArryParser = do 
+   _ <- char '['
+   parsedObject <-  sepBy jPrimitiveParse (pairSeparator) 
+   _ <- char ']'
+   pure $ JArray parsedObject
 
-
-allObjectParser :: Parser JSON
-allObjectParser = do
-  parsedObject <-  sepBy jObjectParser (pairSeparator) 
-  _ <- P.eof
-  pure $ JArray parsedObject
-
-parseInput :: String -> Maybe [JSON]
+parseInput :: String -> Maybe JSON
 parseInput str = case (parsed) of
                   Right x -> Just x
                   Left _ -> Nothing
     where parsed = (do
-            jsons <- parse jsonParseCombined str
+            jsons <- parse jPrimitiveParse str
             pure (jsons))
     
 
--- NEED A PARSER FOR EACH JSON DATA TYPE
- -- = JNull
-  -- | JBoolean Bool
-  -- | JInt Int
-  -- | JFloat Double
-  -- | JString String
-  -- | JArray [JSON]
-  -- | JObject [(String, JSON)]
+
+
+readJsonFile :: String -> IO String
+readJsonFile nm = do
+   content <- readFile $ "./data/" ++  nm ++ ".json"
+   pure content 
+
+-- parseJsonFromFile :: String -> Maybe JSON 
+-- parseJsonFromFile nm = do
+--         text <- readJsonFile nm
+--         return $ JNull
+
+

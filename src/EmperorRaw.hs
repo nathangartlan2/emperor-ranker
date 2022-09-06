@@ -41,3 +41,9 @@ augustus = "{\"name\": \"augustus\", \"reignStart\" : 27, \"reignEnd\" : 14, \"b
 
 augustus1 :: String
 augustus1 = "{\"name\": \"augustus\", \"reignStart\" : 27, \"reignEnd\" : 14, \"bio\" : \"First Roman\"}"
+
+augustus2 :: String
+augustus2 = "{\"name\": \"augustus\", \"reignStart\" : 27}"
+
+augustus3 :: String
+augustus3 = "{\"name\": \"augustus\"}"
